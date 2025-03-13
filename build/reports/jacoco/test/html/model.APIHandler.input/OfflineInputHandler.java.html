@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OfflineInputHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Task3</a> &gt; <a href="index.source.html" class="el_package">model.APIHandler.input</a> &gt; <span class="el_source">OfflineInputHandler.java</span></div><h1>OfflineInputHandler.java</h1><pre class="source lang-java linenums">package model.APIHandler.input;
+
+import model.marvelObjects.Character;
+import model.marvelObjects.Comic;
+import model.marvelObjects.DisplayComic;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L11">public class OfflineInputHandler implements InputHandler{</span>
+
+
+    @Override
+    public List&lt;Character&gt; getCharacterList(String searchTerm) {
+<span class="fc" id="L16">        ArrayList&lt;Character&gt; returnList = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L18">        File file = new File(&quot;portrait_uncanny.jpg&quot;);</span>
+<span class="fc" id="L19">        String path = file.getAbsolutePath().replace(&quot;portrait_uncanny.jpg&quot;, &quot;src&quot; + File.separator + &quot;main&quot; + File.separator + &quot;resources&quot; + File.separator + &quot;portrait_uncanny.jpg&quot;);</span>
+
+        //HULK
+<span class="fc" id="L22">        ArrayList&lt;Comic&gt; comics = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L23">        comics.add(new Comic(&quot;5 Ronin (Hardcover)&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L24">        comics.add(new Comic(&quot;Age of X: Universe (2011) #1&quot;, &quot;http://gateway.marvel.com/v1/public/comics/38524&quot;));</span>
+<span class="fc" id="L25">        returnList.add(new Character(1009351, &quot;Hulk&quot;, comics, path, &quot;jpg&quot;));</span>
+
+        //IRON MAN
+<span class="fc" id="L28">        ArrayList&lt;Comic&gt; comics2 = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L29">        comics2.add(new Comic(&quot;Iron Comic 1&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L30">        comics2.add(new Comic(&quot;Iron Comic 2&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L31">        comics2.add(new Comic(&quot;Iron Comic 3&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L32">        comics2.add(new Comic(&quot;Iron Comic 4&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L33">        comics2.add(new Comic(&quot;Iron Comic Revenge of Iron Mann't&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L34">        returnList.add(new Character(1009368, &quot;Iron Man&quot;, comics2, path, &quot;jpg&quot;));</span>
+
+        //THOR
+<span class="fc" id="L37">        ArrayList&lt;Comic&gt; comics3 = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L38">        comics3.add(new Comic(&quot;Thor1&quot;, &quot;http://gateway.marvel.com/v1/public/comics/100083&quot;));</span>
+<span class="fc" id="L39">        comics3.add(new Comic(&quot;Thor2&quot;, &quot;http://gateway.marvel.com/v1/public/comics/100083&quot;));</span>
+<span class="fc" id="L40">        comics3.add(new Comic(&quot;Thor3&quot;, &quot;http://gateway.marvel.com/v1/public/comics/100083&quot;));</span>
+<span class="fc" id="L41">        comics3.add(new Comic(&quot;Thor4&quot;, &quot;http://gateway.marvel.com/v1/public/comics/100083&quot;));</span>
+<span class="fc" id="L42">        comics3.add(new Comic(&quot;Thor5&quot;, &quot;http://gateway.marvel.com/v1/public/comics/100083&quot;));</span>
+
+<span class="fc" id="L44">        returnList.add(new Character(1009664, &quot;Thor&quot;, comics3, path , &quot;jpg&quot;));</span>
+<span class="fc" id="L45">        return returnList;</span>
+    }
+
+    @Override
+    public List&lt;DisplayComic&gt; getComicsOfCharacter(int characterID) {
+<span class="fc" id="L50">        ArrayList&lt;DisplayComic&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">        ArrayList&lt;String&gt; characters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L52">        characters.add(&quot;Hulk&quot;); characters.add(&quot;Thor&quot;); characters.add(&quot;Iron Man&quot;);</span>
+<span class="fc" id="L53">        returnList.add(new DisplayComic(1, &quot;Comic 1&quot;, characters));</span>
+<span class="fc" id="L54">        returnList.add(new DisplayComic(2, &quot;Comic 2&quot;, characters));</span>
+<span class="fc" id="L55">        returnList.add(new DisplayComic(3, &quot;Comic 3&quot;, characters));</span>
+<span class="fc" id="L56">        returnList.add(new DisplayComic(4, &quot;Comic 4&quot;, characters));</span>
+<span class="fc" id="L57">        return returnList;</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getCharactersInComic(int comicID) {
+<span class="fc" id="L62">        ArrayList&lt;String&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L63">        returnList.add(&quot;Hulk&quot;);</span>
+<span class="fc" id="L64">        returnList.add(&quot;Thor&quot;);</span>
+<span class="fc" id="L65">        returnList.add(&quot;Iron Man&quot;);</span>
+
+<span class="fc" id="L67">        return returnList;</span>
+    }
+
+    @Override
+    public Character getCharacterWithName(String name){
+<span class="fc" id="L72">        ArrayList&lt;Comic&gt; comics = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L73">        File file = new File(&quot;portrait_uncanny.jpg&quot;);</span>
+<span class="fc" id="L74">        String path = file.getAbsolutePath().replace(&quot;portrait_uncanny.jpg&quot;, &quot;src&quot; + File.separator + &quot;main&quot; + File.separator + &quot;resources&quot; + File.separator + &quot;portrait_uncanny.jpg&quot;);</span>
+
+<span class="fc" id="L76">        comics.add(new Comic(&quot;Iron Comic 1&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L77">        comics.add(new Comic(&quot;Iron Comic 2&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L78">        comics.add(new Comic(&quot;Iron Comic 3&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L79">        comics.add(new Comic(&quot;Iron Comic 4&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+<span class="fc" id="L80">        comics.add(new Comic(&quot;Iron Comic Revenge of Iron Mann't&quot;, &quot;http://gateway.marvel.com/v1/public/comics/41112&quot;));</span>
+
+<span class="fc" id="L82">        return new Character(1009368, &quot;Iron Man&quot;, comics, path, &quot;jpg&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Task3</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">AppModel.java</span></div><h1>AppModel.java</h1><pre class="source lang-java linenums">package model;
+
+import controller.AppController;
+import model.APIHandler.input.InputHandler;
+import model.APIHandler.input.OfflineInputHandler;
+import model.APIHandler.input.OnlineInputHandler;
+import model.APIHandler.output.OfflineOutputHandler;
+import model.APIHandler.output.OnlineOutputHandler;
+import model.APIHandler.output.OutputHandler;
+import model.cacheHandler.CacheHandler;
+import model.history.HistoryHandler;
+import model.marvelObjects.Character;
+import model.marvelObjects.DisplayComic;
+import view.CacheResponse;
+
+import java.util.List;
+
+/**
+ * The primary model class
+ */
+public class AppModel {
+    private InputHandler inputHandler;
+    private OutputHandler outputHandler;
+<span class="fc" id="L24">    private HistoryHandler historyHandler=new HistoryHandler();</span>
+    private CacheHandler cacheHandler;
+    private AppController controller;
+
+<span class="fc" id="L28">    private int operationsPerformed=0;</span>
+    private String redditClientID;
+    private String redditSecret;
+
+<span class="fc" id="L32">    public AppModel(String inputState, String outputState){</span>
+        //Define input handler
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (&quot;online&quot;.equalsIgnoreCase(inputState)){</span>
+<span class="fc" id="L35">            this.inputHandler = new OnlineInputHandler(System.getenv(&quot;INPUT_API_KEY&quot;), System.getenv(&quot;INPUT_API_APP_ID&quot;));</span>
+<span class="fc" id="L36">            this.cacheHandler = new CacheHandler(true);</span>
+        } else{
+<span class="fc" id="L38">            this.inputHandler = new OfflineInputHandler();</span>
+<span class="fc" id="L39">            this.cacheHandler = new CacheHandler(false);</span>
+        }
+
+        //Define reddit keys (optional)
+        try{
+<span class="fc" id="L44">            redditClientID = System.getenv(&quot;REDDIT_CLIENT_ID&quot;);</span>
+<span class="nc" id="L45">        } catch (Exception e){</span>
+<span class="nc" id="L46">            redditClientID = null;</span>
+<span class="fc" id="L47">        }</span>
+        try{
+<span class="fc" id="L49">            redditSecret = System.getenv(&quot;REDDIT_SECRET&quot;);</span>
+<span class="nc" id="L50">        } catch (Exception e){</span>
+<span class="nc" id="L51">            redditSecret = null;</span>
+<span class="fc" id="L52">        }</span>
+
+        //Create output handler
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (&quot;online&quot;.equalsIgnoreCase(outputState)){</span>
+<span class="fc" id="L56">            this.outputHandler = new OnlineOutputHandler(System.getenv(&quot;TWILIO_API_KEY&quot;), System.getenv(&quot;TWILIO_API_SID&quot;), System.getenv(&quot;TWILIO_API_FROM&quot;), System.getenv(&quot;TWILIO_API_TO&quot;), redditClientID, redditSecret);</span>
+        } else{
+<span class="fc" id="L58">            this.outputHandler = new OfflineOutputHandler();</span>
+        }
+<span class="fc" id="L60">    }</span>
+
+    public CacheHandler getCacheHandler(){
+<span class="nc" id="L63">        return cacheHandler;</span>
+    }
+
+    public void setController(AppController controller){
+<span class="nc" id="L67">        this.controller = controller;</span>
+<span class="nc" id="L68">    }</span>
+
+<span class="nc" id="L70">    public HistoryHandler getHistoryHandler(){return this.historyHandler;}</span>
+
+    public InputHandler getInputHandler() {
+<span class="fc" id="L73">        return inputHandler;</span>
+    }
+
+    /**
+     * Called whenever an operation is performed or ended
+     * @param addOrSubtract the number of operations being started(+ve) or stopped(-ve)
+     * @return true if at least 1 operation is running, else false
+     */
+    public boolean operationIsBeingPerformed(int addOrSubtract){
+<span class="fc" id="L82">        this.operationsPerformed += addOrSubtract;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (operationsPerformed == 0){</span>
+<span class="fc" id="L84">            return false;</span>
+        } else{
+<span class="fc" id="L86">            return true;</span>
+        }
+    }
+
+    /**
+     * Check if the user has set reddit keys
+     * @return true if valid, else false
+     */
+    public boolean areRedditKeysValid(){
+<span class="nc bnc" id="L95" title="All 4 branches missed.">        if (redditSecret != null &amp;&amp; redditClientID != null){</span>
+<span class="nc" id="L96">            return true;</span>
+        }
+<span class="nc" id="L98">        return false;</span>
+    }
+
+    /**
+     * Calls the inputhandler and gets characters corrisponding to the search term, and tries to cache the results
+     * @param searchTerm the search term entered by the user
+     * @return the corrisponding characters
+     */
+    public List&lt;Character&gt; getCharacterList(String searchTerm) {
+<span class="nc" id="L107">        List&lt;Character&gt; characters = inputHandler.getCharacterList(searchTerm);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (cacheHandler.isCacheEnabled()){</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Character c : characters){</span>
+<span class="nc" id="L110">                cacheHandler.cacheCharacter(c);</span>
+<span class="nc" id="L111">            }</span>
+        }
+<span class="nc" id="L113">        return characters;</span>
+    }
+
+    public List&lt;DisplayComic&gt; getComicsOfCharacter(int characterID) {
+<span class="nc" id="L117">        return inputHandler.getComicsOfCharacter(characterID);</span>
+    }
+
+    /**
+     * Gets the characters in a comic, if cached lets us know and returns the corrisponding characters
+     * @param comicID the ID of the comic
+     * @return the corrisponding characters
+     */
+    public List&lt;String&gt; getCharactersInComic(int comicID) {
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (cacheHandler.isComicCached(comicID)){</span>
+<span class="nc" id="L127">            CacheResponse response = controller.getView().createCacheAlert();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (response == CacheResponse.USE_CACHE){</span>
+<span class="nc" id="L129">                return cacheHandler.getCharactersInComic(comicID);</span>
+            }
+        }
+<span class="nc" id="L132">        List&lt;String&gt; s = inputHandler.getCharactersInComic(comicID);</span>
+<span class="nc" id="L133">        cacheHandler.cacheCharacterList(s, comicID);</span>
+<span class="nc" id="L134">        return s;</span>
+    }
+
+    public Character getCharacterWithName(String name) {
+<span class="nc" id="L138">        Character c = inputHandler.getCharacterWithName(name);</span>
+<span class="nc" id="L139">        cacheHandler.cacheCharacter(c);</span>
+<span class="nc" id="L140">        return c;</span>
+    }
+
+    public OutputHandler getOutputHandler() {
+<span class="fc" id="L144">        return outputHandler;</span>
+    }
+
+    public void clearCache(){
+<span class="nc" id="L148">        cacheHandler.clearCache();</span>
+<span class="nc" id="L149">    }</span>
+
+
+    public String getRedditValidityString(boolean b){
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (b){</span>
+<span class="nc" id="L154">            return &quot;Posted to Reddit successfully&quot;;</span>
+        }
+<span class="nc" id="L156">        return &quot;Failed to post to Reddit&quot;;</span>
+    }
+
+    public String getTwilioValidityString(boolean b){
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (b){</span>
+<span class="nc" id="L161">            return &quot;Sent Twilio message successfully&quot;;</span>
+        }
+<span class="nc" id="L163">        return &quot;Failed to send message to Twilio&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
