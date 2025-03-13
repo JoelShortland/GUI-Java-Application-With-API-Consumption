@@ -5,4 +5,4 @@ The idea behind the program is a GUI made with JavaFX to allow for visual explor
 - Usage of the JavaFX library for the GUI.
 - Usage of JSON to store search history for export.
 - Usage of the http library for API access, both to import data from the Marvel API and to export data using Twilio's to Reddit and Mobile.
-- The use of caching to minimise API calls. 
+- The use of caching to minimise API calls with the use of SQLite. 
