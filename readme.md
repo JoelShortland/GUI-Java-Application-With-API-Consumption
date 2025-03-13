@@ -1,4 +1,4 @@
-This was a project originally made for a university assignment (USYD SOFT3202).
+This was a project originally made for a university assignment (USYD SOFT3202). To run, build with gradle and call main(). 
 
 The idea behind the program is a GUI made with JavaFX to allow for visual exploration of a API. The key features include:
 - The application of a Model-View-Controller framework for the application.
