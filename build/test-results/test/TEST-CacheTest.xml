@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CacheTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-06-03T05:37:12" hostname="DESKTOP-J791U7R" time="5.151">
-  <properties/>
-  <testcase name="testCharacterInComic()" classname="CacheTest" time="1.407"/>
-  <testcase name="testCharacters()" classname="CacheTest" time="1.986"/>
-  <testcase name="testComicsInCharacter()" classname="CacheTest" time="1.755"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
